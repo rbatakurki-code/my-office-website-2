@@ -1,115 +1,173 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { client } from '../../lib/sanity'
+import { GetStaticProps } from 'next'
+import { useRef } from 'react'
+import styles from './index.module.css'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+export const getStaticProps: GetStaticProps = async () => {
+  const homePage = await client.fetch(`*[_type == "homePage"][0]`)
+  const aboutPage = await client.fetch(`*[_type == "aboutPage"][0]`)
+  const careerPage = await client.fetch(`*[_type == "careerPage"][0]`)
+  const servicesPage = await client.fetch(`*[_type == "servicesPage"][0]{
+    services[]{
+      title,
+      description,
+      techStack
+    }
+  }`)
+  const blogPosts = await client.fetch(`*[_type == "blogPost"] | order(date desc)`)
+  const portfolioItem = await client.fetch(`*[_type == "portfolioItem"] | order(date desc)`)
+  const contactPage = await client.fetch(`
+    *[_type == "contactPage"][0]{
+      title,
+      description,
+      address,
+      phone,
+      email,
+      mapEmbed
+    }
+  `)
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  return {
+    props: {
+      homePage,
+      aboutPage,
+      careerPage,
+      servicesPage,
+      blogPosts,
+      portfolioItem,
+      contactPage
+    },
+  }
+}
 
-export default function Home() {
+export default function Home({ homePage, aboutPage, careerPage, servicesPage, blogPosts, portfolioItem, contactPage }: any) {
+  const aboutRef = useRef<HTMLDivElement | null>(null)
+  const careerRef = useRef<HTMLDivElement | null>(null)
+  const servicesRef = useRef<HTMLDivElement | null>(null)
+  const blogPostRef = useRef<HTMLDivElement | null>(null)
+  const portfolioItemRef = useRef<HTMLDivElement | null>(null)
+  const contactPageRef = useRef<HTMLDivElement | null>(null)
+
+  const scrollToSection = (ref: React.RefObject<HTMLDivElement | null>) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/pages/index.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className={styles.main}>
+      {/* Hero Section */}
+      <section className={styles.hero}>
+        <h1 className={styles.heroTitle}>{homePage.hero.title}</h1>
+        <p className={styles.heroSubtitle}>{homePage.hero.subtitle}</p>
+        <div className={styles.buttonGroup}>
+          <button onClick={() => scrollToSection(aboutRef)} className={styles.button}>About</button>
+          <button onClick={() => scrollToSection(servicesRef)} className={styles.button}>Services</button>
+          <button onClick={() => scrollToSection(careerRef)} className={styles.button}>Careers</button>
+          <button onClick={() => scrollToSection(blogPostRef)} className={styles.button}>Blogs</button>
+          <button onClick={() => scrollToSection(portfolioItemRef)} className={styles.button}>Portfolio</button>
+          <button onClick={() => scrollToSection(contactPageRef)} className={styles.button}>Contact Us</button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </section>
+
+      {/* About Section */}
+      <section ref={aboutRef} id="about" className={styles.section}>
+        <h2>{aboutPage.title}</h2>
+        <p>{aboutPage.description}</p>
+        <h3>Our Core Values</h3>
+        <ul>
+          {aboutPage.values.map((value: string, index: number) => (
+            <li key={index}>✅ {value}</li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Services Section */}
+      <section ref={servicesRef} id="services" className={styles.section}>
+        <h2>Our Services</h2>
+        {Array.isArray(servicesPage?.services) && servicesPage.services.length > 0 ? (
+          servicesPage.services.map((service: any, index: number) => (
+            <div key={index}>
+              <h3>{service.title}</h3>
+              <p>{service.description}</p>
+              <p><strong>Tech Stack:</strong> {service.techStack}</p>
+            </div>
+          ))
+        ) : (
+          <p>No services found.</p>
+        )}
+      </section>
+
+      {/* Careers Section */}
+      <section ref={careerRef} id="careers" className={styles.section}>
+        <h2>Careers</h2>
+        <p>{careerPage.intro}</p>
+        {careerPage.openings.map((job: any, i: number) => (
+          <div key={i} className={styles.job}>
+            <h3>{job.title}</h3>
+            <p><strong>Location:</strong> {job.location}</p>
+            <p><strong>Type:</strong> {job.type}</p>
+            <p>{job.description}</p>
+          </div>
+        ))}
+        <p style={{ fontStyle: 'italic' }}>{careerPage.note}</p>
+      </section>
+
+      {/* Blog Section */}
+      <section ref={blogPostRef} id="blog" className={styles.section}>
+        <h2>Latest Blog Posts</h2>
+        {blogPosts && blogPosts.length > 0 ? (
+          blogPosts.map((post: any, index: number) => (
+          <div key={index} className={styles.blogPost}>
+            <h3>{post.title}</h3>
+            <p><strong>By:</strong> {post.author} | <strong>Date:</strong> {post.date}</p>
+            <p>{post.summary}</p>
+          </div>
+        ))
+        ) : (
+          <p>No blog posts found.</p>
+        )}
+      </section>
+
+      {/* Portfolio Section */}
+      <section ref={portfolioItemRef} id="portfolio" className={styles.section}>
+        <h2>Our Portfolio</h2>
+        {portfolioItem && portfolioItem.length > 0 ? (
+          portfolioItem.map((item: any, index: number) => (
+            <div key={index} className={styles.portfolioItem}>
+              <h3>{item.title}</h3>
+              <p><strong>Client:</strong> {item.client}</p>
+              <p><strong>Completed:</strong> {item.date}</p>
+              <p>{item.description}</p>
+            </div>
+          ))
+        ) : (
+          <p>No portfolio items found.</p>
+        )}
+      </section>
+
+      <section ref={contactPageRef} id="contact" className={styles.section}>
+        <h2>{contactPage.title}</h2>
+        <p>{contactPage.description}</p>
+
+        <div style={{ marginTop: '1rem' }}>
+          <p><strong>Address:</strong> {contactPage.address}</p>
+          <p><strong>Phone:</strong> {contactPage.phone}</p>
+          <p><strong>Email:</strong> <a href={`mailto:${contactPage.email}`}>{contactPage.email}</a></p>
+        </div>
+
+        {contactPage.mapEmbed && (
+          <div style={{ marginTop: '2rem' }}>
+            <iframe
+              src={contactPage.mapEmbed}
+              width="100%"
+              height="300"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+            ></iframe>
+          </div>
+        )}
+      </section>
+
+    </main>
+  )
 }
