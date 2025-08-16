@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { client } from '../../lib/sanity'
 import { GetStaticProps } from 'next'
 import { useRef } from 'react'
