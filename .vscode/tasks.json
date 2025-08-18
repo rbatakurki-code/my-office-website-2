@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Remove unused CSS module file",
+			"command": "rm src/pages/index.module.css",
+			"group": "build"
+		}
+	]
+}
