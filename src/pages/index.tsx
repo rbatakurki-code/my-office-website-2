@@ -4,6 +4,7 @@
 import { client } from '../../lib/sanity';
 import { GetStaticProps } from 'next';
 import { useRef, useState } from 'react';
+import { PortableText } from '@portabletext/react';
 
 export const getStaticProps: GetStaticProps = async () => {
   const homePage = await client.fetch(`*[_type == "homePage"][0]`)
@@ -28,7 +29,7 @@ export const getStaticProps: GetStaticProps = async () => {
       mapEmbed
     }
   `)
-
+  
   return {
     props: {
       homePage,
@@ -69,9 +70,9 @@ export default function Home({ homePage, aboutPage, careerPage, servicesPage, bl
           <ul className="hidden md:flex flex-wrap gap-4 md:gap-8 font-medium text-base lg:text-lg">
             <li><button onClick={() => scrollToSection(aboutRef)} className="hover:text-yellow-300 text-white transition">About</button></li>
             <li><button onClick={() => scrollToSection(servicesRef)} className="hover:text-yellow-300 text-white transition">Services</button></li>
-            <li><button onClick={() => scrollToSection(careerRef)} className="hover:text-yellow-300 text-white transition">Careers</button></li>
             <li><button onClick={() => scrollToSection(projectsRef)} className="hover:text-yellow-300 text-white transition">Projects</button></li>
             <li><button onClick={() => scrollToSection(testimonialsRef)} className="hover:text-yellow-300 text-white transition">Testimonials</button></li>
+            <li><button onClick={() => scrollToSection(careerRef)} className="hover:text-yellow-300 text-white transition">Careers</button></li>
             <li><button onClick={() => scrollToSection(contactRef)} className="hover:text-yellow-300 text-white transition">Contact</button></li>
           </ul>
           {/* Hamburger for mobile */}
@@ -89,9 +90,9 @@ export default function Home({ homePage, aboutPage, careerPage, servicesPage, bl
             <div className="absolute top-16 left-0 w-full bg-gradient-to-br from-blue-600 via-fuchsia-500 to-yellow-400/95 shadow-lg rounded-b-xl flex flex-col items-center py-6 gap-4 animate-fade-in z-50 md:hidden">
               <button onClick={() => { scrollToSection(aboutRef); setMenuOpen(false); }} className="text-white text-lg font-medium hover:text-yellow-300 transition">About</button>
               <button onClick={() => { scrollToSection(servicesRef); setMenuOpen(false); }} className="text-white text-lg font-medium hover:text-yellow-300 transition">Services</button>
-              <button onClick={() => { scrollToSection(careerRef); setMenuOpen(false); }} className="text-white text-lg font-medium hover:text-yellow-300 transition">Careers</button>
               <button onClick={() => { scrollToSection(projectsRef); setMenuOpen(false); }} className="text-white text-lg font-medium hover:text-yellow-300 transition">Projects</button>
               <button onClick={() => { scrollToSection(testimonialsRef); setMenuOpen(false); }} className="text-white text-lg font-medium hover:text-yellow-300 transition">Testimonials</button>
+              <button onClick={() => { scrollToSection(careerRef); setMenuOpen(false); }} className="text-white text-lg font-medium hover:text-yellow-300 transition">Careers</button>
               <button onClick={() => { scrollToSection(contactRef); setMenuOpen(false); }} className="text-white text-lg font-medium hover:text-yellow-300 transition">Contact</button>
             </div>
           )}
@@ -101,21 +102,71 @@ export default function Home({ homePage, aboutPage, careerPage, servicesPage, bl
       {/* Main Content */}
       <main className="pt-24 md:pt-32">
         {/* Hero Section */}
-        <section className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4 py-12 sm:py-16 md:py-24 bg-gradient-to-br from-fuchsia-100 via-blue-100 to-yellow-100 animate-fade-in">
+        <section className="min-h-[40vh] flex flex-col items-center justify-center text-center px-4 py-12 sm:py-16 md:py-24 bg-gradient-to-br from-fuchsia-100 via-blue-100 to-yellow-100 animate-fade-in">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 tracking-tight text-fuchsia-700 drop-shadow animate-slide-up">{homePage?.hero?.title}</h1>
           <button onClick={() => scrollToSection(contactRef)} className="px-6 sm:px-8 py-3 bg-gradient-to-r from-fuchsia-500 via-blue-500 to-yellow-400 text-white rounded-full font-semibold shadow-lg hover:scale-105 hover:from-yellow-400 hover:to-fuchsia-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 animate-bounce">Get Started</button>
         </section>
 
         {/* About Section */}
-        <section ref={aboutRef} id="about" className="max-w-4xl mx-auto px-4 py-10 sm:py-14 md:py-16 bg-white/80 rounded-2xl shadow-lg my-8 animate-fade-in" aria-label="About">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">{aboutPage?.title || 'About Us'}</h2>
-          <p className="text-base sm:text-lg text-gray-700 mb-6">{aboutPage?.description}</p>
-          <h3 className="text-lg sm:text-xl font-semibold mb-2">Our Core Values</h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {aboutPage?.values?.map((value: string, idx: number) => (
-              <li key={idx} className="flex items-center gap-2"><span className="text-green-500">✔️</span> {value}</li>
-            ))}
-          </ul>
+        <section
+          ref={aboutRef}
+          id="about"
+          className="max-w-4xl mx-auto px-4 py-10 sm:py-14 md:py-16 bg-white/80 rounded-2xl shadow-lg my-8 animate-fade-in"
+          aria-label="About"
+        >
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6">About SignificMinds</h2>
+
+          {/* Company Overview */}
+          {aboutPage?.overview && (
+            <div className="text-base sm:text-lg text-gray-700 mb-6 space-y-4">
+              <PortableText value={aboutPage.overview} />
+            </div>
+          )}
+
+          {/* Mission */}
+          {aboutPage?.mission && (
+            <div className="mb-6">
+              <h3 className="text-lg sm:text-xl font-semibold mb-1">🎯 Our Mission</h3>
+              <p className="text-gray-700 text-sm sm:text-base">{aboutPage.mission}</p>
+            </div>
+          )}
+
+          {/* Vision */}
+          {aboutPage?.vision && (
+            <div className="mb-6">
+              <h3 className="text-lg sm:text-xl font-semibold mb-1">🌍 Our Vision</h3>
+              <p className="text-gray-700 text-sm sm:text-base">{aboutPage.vision}</p>
+            </div>
+          )}
+
+          {/* Core Values */}
+          {aboutPage?.coreValues?.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">🧭 Our Core Values</h3>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {aboutPage.coreValues.map((value: any, idx: number) => (
+                  <li key={idx} className="flex flex-col">
+                    <div className="flex items-center gap-2 font-medium text-green-600">
+                      ✅ {value.title}
+                    </div>
+                    <p className="text-sm text-gray-700">{value.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* What We Offer */}
+          {aboutPage?.services?.length > 0 && (
+            <div>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">🛠️ What We Offer</h3>
+              <ul className="list-disc pl-5 text-sm sm:text-base text-gray-700 space-y-1">
+                {aboutPage.services.map((service: any, idx: number) => (
+                  <li key={idx}>{service.title}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
 
         {/* Services Section */}
@@ -137,18 +188,69 @@ export default function Home({ homePage, aboutPage, careerPage, servicesPage, bl
             </div>
           </div>
         </section>
-
+        
         {/* Projects Section */}
-        <section ref={projectsRef} id="projects" className="max-w-5xl mx-auto px-4 py-10 sm:py-14 md:py-16 bg-white/80 rounded-2xl shadow-lg my-8 animate-fade-in" aria-label="Projects">
+        <section
+          ref={projectsRef}
+          id="projects"
+          className="max-w-5xl mx-auto px-4 py-10 sm:py-14 md:py-16 bg-white/80 rounded-2xl shadow-lg my-8 animate-fade-in"
+          aria-label="Projects"
+        >
           <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">Projects</h2>
           <div className="grid gap-6 sm:gap-8 md:grid-cols-2">
             {portfolioItem && portfolioItem.length > 0 ? (
               portfolioItem.map((item: any, idx: number) => (
-                <div key={idx} className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition">
+                <div
+                  key={item._id || idx}
+                  className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition"
+                >
                   <h3 className="text-lg sm:text-xl font-semibold mb-2">{item.title}</h3>
-                  <p className="text-gray-600 mb-1 text-sm sm:text-base"><span className="font-medium">Client:</span> {item.client}</p>
-                  <p className="text-gray-500 mb-2 text-xs sm:text-sm"><span className="font-medium">Completed:</span> {item.date}</p>
-                  <p className="text-gray-700 text-sm sm:text-base">{item.description}</p>
+
+                  <div className="mb-3">
+                      <span className="font-semibold text-sm text-gray-800 mb-1">Client:</span> {item.client}
+                  </div>
+
+                  <p className="text-gray-700 text-sm sm:text-base mb-4">{item.overview}</p>
+
+                  {/* Features */}
+                  {item.features?.length > 0 && (
+                    <div className="mb-3">
+                      <h4 className="font-semibold text-sm text-gray-800 mb-1">Key Features:</h4>
+                      <ul className="list-disc ml-5 space-y-1 text-sm text-gray-700">
+                        {item.features.map((feature: any) => (
+                          <li key={feature._key}>
+                            <span className="font-medium">{feature.feature}</span>: {feature.description}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Technologies */}
+                  {item.technology?.length > 0 && (
+                    <div className="mb-3">
+                      <h4 className="font-semibold text-sm text-gray-800 mb-1">Technology Stack:</h4>
+                      <ul className="list-disc ml-5 space-y-1 text-sm text-gray-700">
+                        {item.technology.map((tech: any) => (
+                          <li key={tech._key}>
+                            <span className="font-medium">{tech.technology}</span>: {tech.details}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Impact */}
+                  {item.impact?.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-sm text-gray-800 mb-1">Impact:</h4>
+                      <ul className="list-disc ml-5 space-y-1 text-sm text-gray-700">
+                        {item.impact.map((impact: any) => (
+                          <li key={impact._key}>{impact.details}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
@@ -231,7 +333,7 @@ export default function Home({ homePage, aboutPage, careerPage, servicesPage, bl
               <li><button onClick={() => scrollToSection(contactRef)} className="hover:text-yellow-300 transition">Contact</button></li>
             </ul>
           </nav>
-          <div className="text-xs text-white/80 mt-4 md:mt-0 text-center w-full md:w-auto">&copy; {new Date().getFullYear()} {homePage?.hero?.title || 'My Office'}. All rights reserved.</div>
+          <div className="text-xs text-white/80 mt-4 md:mt-0 text-center w-full md:w-auto">&copy; {new Date().getFullYear()} {'SignificMinds'}. All rights reserved.</div>
         </div>
       </footer>
     </div>
