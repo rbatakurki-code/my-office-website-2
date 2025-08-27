@@ -7,7 +7,7 @@ import { PortableText } from '@portabletext/react';
 
 // Local imports
 import { client } from '../../lib/sanity';
-import { urlFor } from './utils/imageUrl';
+import { urlFor } from '../../lib/imageUrl';
 
 export const getStaticProps: GetStaticProps = async () => {
   const homePage = await client.fetch(`*[_type == "homePage"][0]`)
