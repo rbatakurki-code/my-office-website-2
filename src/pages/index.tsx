@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-
+// External imports
 import { GetStaticProps } from 'next';
 import { useRef, useState } from 'react';
 import { PortableText } from '@portabletext/react';
+
+// Local imports
 import { client } from '../../lib/sanity';
 import { urlFor } from './utils/imageUrl';
 
@@ -50,7 +52,6 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-
 export default function Home({ 
   homePage, 
   aboutPage, 
@@ -63,6 +64,7 @@ export default function Home({
   careerPage, 
   contactPage
 }: any) {
+
   const [menuOpen, setMenuOpen] = useState(false);
   const aboutRef = useRef<HTMLDivElement | null>(null);
   const servicesRef = useRef<HTMLDivElement | null>(null);
@@ -79,6 +81,7 @@ export default function Home({
   };
 
   return (
+
     <div className="bg-gradient-to-br from-blue-50 via-fuchsia-50 to-yellow-50 text-gray-900 min-h-screen">
       {/* Sticky Header */}
       <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-blue-600 via-fuchsia-500 to-yellow-400/90 backdrop-blur border-b border-gray-200 shadow-md">
@@ -397,7 +400,6 @@ export default function Home({
           </div>
         </section>
 
-
         {/* Blog Section */}
         <section ref={blogPostsRef} id="blog" className="max-w-4xl mx-auto px-4 py-10 sm:py-14 md:py-16 bg-white/80 rounded-2xl shadow-lg my-8 animate-fade-in" aria-label="Blog">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4">Latest Blog Posts</h2>
@@ -467,6 +469,7 @@ export default function Home({
           )}
         </section>
       </main>
+
       {/* Footer */}
       <footer className="w-full bg-gradient-to-r from-fuchsia-500 via-blue-600 to-yellow-400 text-white py-8 mt-8 shadow-inner animate-fade-in">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-4">
@@ -487,6 +490,7 @@ export default function Home({
           <div className="text-xs text-white/80 mt-4 md:mt-0 text-center w-full md:w-auto">&copy; {new Date().getFullYear()} {'SignificMinds'}. All rights reserved.</div>
         </div>
       </footer>
+
     </div>
   );
 }
