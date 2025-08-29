@@ -1,4 +1,6 @@
- export default function ContactSection({ contactPage, contactRef }: any) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+export default function ContactSection({ contactPage, contactRef }: any) {
   return (
         <section ref={contactRef} id="contact" className="max-w-4xl mx-auto px-4 py-10 sm:py-14 md:py-16 bg-gradient-to-br from-blue-50 via-fuchsia-50 to-yellow-50 rounded-2xl shadow-lg my-8 animate-fade-in" aria-label="Contact">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4">{contactPage?.title || 'Contact Us'}</h2>

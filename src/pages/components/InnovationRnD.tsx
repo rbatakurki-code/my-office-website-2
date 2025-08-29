@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export default function innovationRnDSection({ innovationRnDItems, innovationRnDRef }: any) {
   return (
     <section

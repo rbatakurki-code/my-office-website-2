@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
+
 import { urlFor } from '../../../lib/imageUrl';
 
 export default function customerSection({ customerDetails, customerDetailsRef }: any) {

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 // External imports
 import { GetStaticProps } from 'next';
 import { useRef, useState } from 'react';
-import { PortableText } from '@portabletext/react';
 
 // Local imports
 import { client } from '../../lib/sanity';

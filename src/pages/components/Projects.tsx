@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export default function ProjectsSection({ portfolioItem, projectsRef }: any) {
   return (
     <section
