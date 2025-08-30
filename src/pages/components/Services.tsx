@@ -8,7 +8,7 @@ export default function ServicesSection({ servicesPage, servicesRef }: any) {
             <div className="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {Array.isArray(servicesPage?.services) && servicesPage.services.length > 0 ? (
                 servicesPage.services.map((service: any, idx: number) => (
-                    <div key={idx} className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition group">
+                    <div key={idx} className="border border-gray-200 p-4 sm:p-6 hover:bg-gray-50 transition group">
                     <h3 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-blue-600 transition">{service.title}</h3>
                     <p className="text-gray-600 mb-2 text-sm sm:text-base">{service.description}</p>
                     <p className="text-xs sm:text-sm text-gray-500"><span className="font-medium">Tech Stack:</span> {service.techStack}</p>

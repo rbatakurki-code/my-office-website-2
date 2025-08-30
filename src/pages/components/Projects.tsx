@@ -14,7 +14,7 @@ export default function ProjectsSection({ portfolioItem, projectsRef }: any) {
           portfolioItem.map((item: any, idx: number) => (
             <div
               key={item._id || idx}
-              className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition"
+              className="border border-gray-200 p-4 sm:p-6 hover:bg-gray-50 transition"
             >
               <h3 className="text-lg sm:text-xl font-semibold mb-2">{item.title}</h3>
 

@@ -16,7 +16,7 @@ export default function innovationRnDSection({ innovationRnDItems, innovationRnD
             innovationRnDItems.map((item: any, idx: number) => (
               <div
                 key={item._id || idx}
-                className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition group"
+                className="border border-gray-200 p-4 sm:p-6 hover:bg-gray-50 transition group"
               >
                 <h3 className="text-lg sm:text-xl font-semibold mb-2 group-hover:text-blue-600 transition">
                   {item.title}

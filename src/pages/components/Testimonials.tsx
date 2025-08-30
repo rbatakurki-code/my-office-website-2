@@ -15,7 +15,7 @@ export default function TestimonialSection({ testimonialsItems, testimonialsRef 
             testimonialsItems.map((item, index) => (
               <blockquote
                 key={item._id || index}
-                className={`bg-white rounded-xl shadow-md p-4 sm:p-6 w-full md:w-1/2 animate-fade-in`}
+                className={`border border-gray-200 p-4 sm:p-6 w-full md:w-1/2 animate-fade-in`}
               >
                 <p className="text-base sm:text-lg italic mb-2">“{item.quote}”</p>
                 <footer className="text-gray-500">— {item.author}</footer>

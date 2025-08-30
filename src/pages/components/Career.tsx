@@ -7,7 +7,7 @@ export default function CareerSection({ careerPage, careerRef }: any) {
           <p className="text-base sm:text-lg text-gray-700 mb-6">{careerPage?.intro}</p>
           <div className="space-y-4 sm:space-y-6">
             {careerPage?.openings?.map((job: any, i: number) => (
-              <div key={i} className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition">
+              <div key={i} className="border border-gray-200 p-4 sm:p-6 hover:bg-gray-50 transition">
                 <h3 className="text-lg sm:text-xl font-semibold mb-1">{job.title}</h3>
                 <p className="text-gray-600 mb-1 text-sm sm:text-base"><span className="font-medium">Location:</span> {job.location}</p>
                 <p className="text-gray-500 mb-1 text-xs sm:text-sm"><span className="font-medium">Type:</span> {job.type}</p>
